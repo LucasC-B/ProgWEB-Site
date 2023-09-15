@@ -12,7 +12,7 @@ class Usuario(models.Model):
     email = models.EmailField(help_text='Informe o email',
                               max_length=254)
     
-    gender = models.CharField(help='Informe o seu gênero',
+    sex = models.CharField(help_text='Informe o seu sexo',
                               max_length=15)
     
     

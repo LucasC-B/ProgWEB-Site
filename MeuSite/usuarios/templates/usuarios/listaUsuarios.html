@@ -4,5 +4,22 @@
         <head>
             <meta charset="UTF-8">
             <title>Lista de Usuarios</title>
+            <link rel="stylesheet" href="{% static 'usuarios/css/estilo.css' %}">
         </head>
+        <body>
+            {% include 'usuarios/links.html' %}
+            <h1>Lista de Usuarios</h1>
+            <table>
+                <tr><th>Nome</th><th>Idade</th><th>Data de Nascimento</th><th>Ações disponíveis</th></tr>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nome }}</td><td>{{ usuario.idade }}</td><td>{{ usuario.dtNasc }}</td>
+                        <td><a href="{% url 'usuarios:atualiza-usuario' pk=usuario.id %}">Atualizar</a> |
+                            <a href="{% url 'usuarios:apaga-usuario' pk=usuario.id %}">Excluir</a></td>
+                    </tr>
+                {% empty %}
+                    <tr><th colspan="5">Ainda não tem usuários cadastrados</th></tr>
+                {% endfor %}
+            </table>
+        </body>
     </html>
