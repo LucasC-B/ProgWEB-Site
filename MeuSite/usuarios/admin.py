@@ -2,6 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-from contatos.models import Pessoa
+from usuarios.models import Usuario
 
-admin.site.register(Pessoa)
+admin.site.register(Usuario)
