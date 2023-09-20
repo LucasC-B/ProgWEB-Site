@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apaga Usuario</title>
+</head>
+<body>
+    {% include 'usuarios/links.html' %}
+    <h1>Remoção de usuarios</h1>
+    <form method='POST'>
+        {% csrf_token %}
+        Confirma a remoção de {{ usuario }}? <br>
+        <button>
+            <a href="{% url 'usuarios:lista-usuarios' %}"
+                style="text-decoration: none; color: black;">Cancela</a>
+        </button>
+        <input type="submit" value="Remove">
+    </form>
+</body>
+</html>
