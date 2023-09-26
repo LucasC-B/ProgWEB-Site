@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class ='container'>
+    <div class='row'>
+        <form method='post' enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class='card m-auto mt-4' style='width: 900px'>
+                <div class='card-body my-2'>
+                    <h3 class='text-center'>Tem certeza que deseja retirar o filme?</h3>
+                    <hr>
+                    {% if filme.usuario == request.user %}
+                    <div class='d-flex justify-content-between align-items-center'>
+                        <h2 class='card-title'>{{filme.titulo}}</h2>
+                    </div>
+                    <hr>
+                    <div class='container'>
+                        <p class='card-text'>{{filme.nacionalidade}}</p>
+                    </div>
+                    
