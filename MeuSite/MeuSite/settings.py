@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #criados
     'usuarios',
-    'basics',
+    'filmes',
+    
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,8 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 WSGI_APPLICATION = 'MeuSite.wsgi.application'
 
