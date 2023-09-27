@@ -12,7 +12,7 @@ def visualizaTelaHome(request):
 
     contexto = {}
 
-    filme = sorted(Filme.objects.all(), attrgetter('date_updated'), reverse=True)
+    filme = sorted(Filme.objects.all(usuario=request.user), attrgetter('titulo'), reverse=True)
     contexto['filmes'] = filme
 
     pagina = request.GET.get("pagina",1)
@@ -21,7 +21,7 @@ def visualizaTelaHome(request):
     try:
         filme = filmesEmPaginas.page(pagina)
     except PageNotAnInteger:
-        filme = filmesEmPaginas.page(settings.BLOG_POST_PER_PAGE)
+        filme = filmesEmPaginas.page(settings.FILMES_PER_PAGE)
     except:
         filme = filmesEmPaginas.page(filmesEmPaginas.num_pages)
 

@@ -102,7 +102,7 @@ def visualizaUsuario(request):
     try:
         filme = filmesEmPaginas.page(pagina)
     except PageNotAnInteger:
-        filme = filmesEmPaginas.page(settings.BLOG_POST_PER_PAGE)
+        filme = filmesEmPaginas.page(settings.FILMES_PER_PAGE)
     except:
         filme = filmesEmPaginas.page(filmesEmPaginas.num_pages)
 
