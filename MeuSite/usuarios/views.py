@@ -5,57 +5,132 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse_lazy
+from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect
+from usuarios.forms import UsuarioRegistraForm
+from usuarios.forms import UsuarioAutenticaForm, UsuarioAtualizaForm
+from django.contrib import messages
+from filmes.forms import Filme
+from operator import attrgetter
+from django.conf import settings
+from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+    
 
-class UsuarioListView(View):
-    def get(self, request, *args, **kwargs):
-        usuarios = Usuario.objects.all()
-        contexto = { 'usuarios': usuarios, }
-        return render(
-            request,
-            'usuarios/listaUsuarios.html',
-            contexto)
+def registrarUsuario(request):
+    contexto = {}
+    if request.POST:
+          form = UsuarioModel2Form(request.POST)
+          if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            senha_k = form.cleaned_data.get('senha1')
+            usuario = authenticate(email=email, password=senha_k)
+            login(request, usuario)
+            return redirect('home')
+          else:
+              contexto['registration_form'] = form
+    else:
+        form = UsuarioRegistraForm
+        contexto['registration_form'] = form
     
-class UsuarioCreateView(View):
-    def get(self, request, *args, **kwargs):
-        contexto = { 'formulario': UsuarioModel2Form, }
-        return render(request,
-            'usuarios/criaUsuario.html', contexto)
+    return render(request, 'usuarios/registro.html', contexto)
+
+
+def visualizaLogout(request):
+    logout(request)
+    messages.success(request, 'Logout feito com sucesso!')
+    return redirect('home')
+
+
+def visualizaLogin(request):
+    contexto = {}
+
+    user = request.user
+    if user.is_authenticated:
+        return redirect('home')
     
-    def post(self, request, *args, **kwargs):
-        formulario = UsuarioModel2Form(request.POST)
-        if formulario.is_valid():
-            usuario = formulario.save()
-            usuario.save()
-            return HttpResponseRedirect(reverse_lazy(
-                'usuarios:lista-usuarios'))
+    if request.POST:
+            form = UsuarioAutenticaForm(request.POST)
+            if form.is_valid():
+                email = request.POST['email']
+                senha = request.POST['senha']
+                user = authenticate(email = email, password=senha)
+                
+                if user:
+                    login(request,user)
+                    messages.success(request, 'Login feito com sucesso!') 
+                    return redirect("home")
+    else:
+        form = UsuarioAutenticaForm()
         
-class UsuarioUpdateView(View):
-    def get(self, request, pk, *args, **kwargs):
-        usuario = Usuario.objects.get(pk=pk)
-        formulario = UsuarioModel2Form(instance=usuario)
-        context = {'usuario': formulario, }
-        return render(request, 'usuarios/atualizaUsuarios.html', context)
+    contexto['login_form'] = form
+    return render(request, 'usuarios/login.html', contexto)
+
+
+def visualizaUsuario(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
     
-    def post(self, request, pk, *args, **kwargs):
-        usuario = get_object_or_404(Usuario, pk=pk)
-        formulario = UsuarioModel2Form(request.POST, instance=usuario)
-        if formulario.is_valid():
-            usuario = formulario.save()
-            usuario.save()
-            return HttpResponseRedirect(reverse_lazy("usuarios:lista-usuarios"))
+    contexto = {}
+
+    if request.POST:
+        form = UsuarioAtualizaForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.initial = {
+				"email": request.POST['email'],
+				"nome":request.POST['nome'],
+			}
+            form.save()
+            messages.success(request, 'Conta atualizada com sucesso!')
         else:
-            contexto = {'usuario': formulario, }
-            return render(request, 'usuarios/atualizaUsuarios.html', contexto)
-        
-class UsuarioDeleteView(View):
-    def get(self, request, pk, *args, **kwargs):
-        usuario = Usuario.objects.get(pk=pk)
-        contexto = { 'usuario': usuario, }
-        return render(request, 'usuarios/apagaUsuarios.html', contexto)
+            messages.warning(request, 'E-mail ou usuário indisponíveis. Tente novamente.')
+    else:
+        form = UsuarioAtualizaForm(
+            initial={
+				"email": request.user.email,
+				"nome": request.user.username,
+			}
+        )
+
+    contexto['usuario_form'] = form
+    filme = sorted(Filme.objects.filter(usuario=request.user), key=attrgetter('titulo'), reverse=True)
+    contexto['filmes'] = filme
+
+    pagina = request.GET.get("pagina",1)
+    filmesEmPaginas = Paginator(filme, settings.FILMES_PER_PAGE)
+
+    try:
+        filme = filmesEmPaginas.page(pagina)
+    except PageNotAnInteger:
+        filme = filmesEmPaginas.page(settings.BLOG_POST_PER_PAGE)
+    except:
+        filme = filmesEmPaginas.page(filmesEmPaginas.num_pages)
+
+    contexto['filmes'] = filme
+    return render(request,'usuarios/usuario.html', contexto)
+
+def visualizaDeletaUsuario(request):
+
+    if not request.user.is_authenticated:
+        return redirect("login")
     
-    def post(self, request, pk, *args, **kwargs):
-        usuario = Usuario.objects.get(pk=pk)
-        usuario.delete()
-        return HttpResponseRedirect(reverse_lazy("usuarios:lista-usuarios"))
-        
-        
+    contexto = {}
+
+    if request.POST:
+        email = request.POST['email']
+        senha = request.POST['senha']
+
+        user = authenticate(email = request.user.email, password = senha)
+
+        if user:
+            user.delete()
+            messages.success(request, 'Conta deletada com sucesso!')
+            return redirect("home")
+        else:
+            messages.warning(request, 'Usuário ou senha incorretos. Tente novamente.')
+
+    return render(request, 'usuarios/deletaUsuario.html', contexto)
+
+
+def visualizaAutentica(request):
+	return render(request,"usuarios/deveAutenticar.html",{})

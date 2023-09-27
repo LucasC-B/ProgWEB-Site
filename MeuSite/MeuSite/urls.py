@@ -18,20 +18,52 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from usuarios import views
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.urls.base import reverse_lazy
-
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.models import User
+from views import visualizaTelaHome
+from usuarios.views import (
+    registrarUsuario,
+    visualizaLogout,
+    visualizaLogin,
+    visualizaUsuario,
+    visualizaDeletaUsuario,
+    visualizaAutentica
+)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('usuarios/', include('usuarios.urls')),
-    path('accounts/', views.homeSec, name='sec-home'),
-    path('accounts/registro/', views.registro, name='sec-registro'),
-    path('accounts/login/', LoginView.as_view(template_name='registro/login.html'), name='sec-login'),
-    path('accounts/profile/', views.paginaSecreta, name='sec-paginaSecreta'),
-    path('logout/', LogoutView.as_view(next_page=reverse_lazy('sec-login')), name='sec-logout'),
-
+    path('', visualizaTelaHome, name='home'),
+    path('registro/', registrarUsuario, name = "registro"),
+    path('login/', visualizaLogin, name = "login"),
+    path('logout/', visualizaLogout, name = "logout"),
+    path('usuario/', visualizaUsuario, name = "usuario"),
+    path('deleta_usuario/', visualizaDeletaUsuario, name = "deleta_usuario"),
+    path('filme/', include('filme.urls', 'filme')),
+    path('must_authenticate/', visualizaAutentica, name = "deveAutenticar"),
+    path('muda_senha/done/', auth_views.PasswordChangeView.as_view(template_name='registro/mudaSenhaDone.html'), 
+         name='muda_senha_done'),
+    path('muda_senha/', auth_views.PasswordChangeView.as_view(template_name='registro/mudaSenha.html'), 
+         name='muda_senha'),
+    path('recupera_senha/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registro/recuperaSenhaDone.html'), 
+         name='recupera_senha_done'),
+    path('recupera_senha/', auth_views.PasswordResetView.as_view(), 
+         name='recupera_senha'),    
+    path('recupera/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), 
+         name='recupera_confirma'),
+    path('recupera/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registro/recuperaCompleto.html'), 
+         name='recupera_completa'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root= settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

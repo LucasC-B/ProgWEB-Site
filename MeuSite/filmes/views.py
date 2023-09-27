@@ -7,9 +7,9 @@ from filmes.models import Filme
 def postaFilmeView(request):
     context ={}
     
-    usuario = request.usuario
-    if not usuario.is_authenticated:
-        return redirect('deveAutenticar.html')
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('deveAutenticar')
     
     form = InsereFilmeForm(request.POST or None, request.FILES or None)
     
@@ -40,9 +40,9 @@ def apagaFilmeView(request, slug):
 def editaFilmeView(request, slug):
     context = {}
     
-    usuario = request.usuario
-    if not usuario.is_authenticated:
-        return redirect('deveAutenticar.html')
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('deveAutenticar')
     
     filme = get_object_or_404(Filme, slug=slug)
     if request.POST:

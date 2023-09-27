@@ -3,35 +3,27 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from filmes.models import Filme
+from operator import attrgetter
+from django.conf import settings
+from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 
-def homeSec(request):
-    return render(request,"registro/homeSec.html")
+def visualizaTelaHome(request):
 
-def registro(request):
-    if request.method == 'POST':
-        formulario = UserCreationForm(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect('sec-home')
-    else:
-            formulario = UserCreationForm()
-    context = {'form': formulario, }
-    return render(request,
-        'registro/registro.html', context)
+    contexto = {}
 
-@login_required
-def paginaSecreta(request):
-    return render(request, 'registro/paginaSecreta.html')
+    filme = sorted(Filme.objects.all(), attrgetter('date_updated'), reverse=True)
+    contexto['filmes'] = filme
 
-# função que retorna True/False
-def testaAcesso(user):
-    # coloque aqui os testes que você precisar
-    if user.has_perm('contatos.change_pessoa'):
-        return True
-    else:
-        return False
-    
-@login_required
-@user_passes_test(testaAcesso)
-def paginaSecreta(request):
-    return render(request, 'registro/paginaSecreta.html')
+    pagina = request.GET.get("pagina",1)
+    filmesEmPaginas = Paginator(filme, settings.FILMES_PER_PAGE)
+
+    try:
+        filme = filmesEmPaginas.page(pagina)
+    except PageNotAnInteger:
+        filme = filmesEmPaginas.page(settings.BLOG_POST_PER_PAGE)
+    except:
+        filme = filmesEmPaginas.page(filmesEmPaginas.num_pages)
+
+    contexto['filmes'] = filme
+    return render(request,'home/home.html', contexto)
