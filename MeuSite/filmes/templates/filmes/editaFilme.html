@@ -1,0 +1,21 @@
+{% extends 'registro/base.html' %}
+
+{% block content %}
+
+<title>Editar Filme {{filme.titulo}}</title>
+<div class='container mt-2'>
+    <div class ='row justify-content-center'>
+        <div class='align-items-center'>
+            <div class='card m-auto mt-4' style='width: 900px;'>
+                <div class='card-header'>
+                    <h3 class='text-center'>Editar postagem</h3>
+                </div>
+                <div class='card-body'>
+                    <form method='post' enctype='multipart/form-data'>
+                        {% csrf_token %}
+                        <div class='mb-3 form-group'>
+                            <label for='id_title' class='form-label'>Título</label>
+                            <input type='text' name='title' class='form-control' id='id_title' placeholder='Digite o titulo' value='{{form.initial.title}}' autofocus>
+                        </div>
+                        <div class='mb-3 form-group'>
+                            <label for='id_body' class='form-label'>

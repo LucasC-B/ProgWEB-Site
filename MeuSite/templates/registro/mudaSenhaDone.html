@@ -1,0 +1,12 @@
+{% extends 'registro/base.html' %}
+
+{% block content %}
+
+<title>Movie Tracker</title>
+
+<p>Senha alterada com sucesso!</p>
+<p>Redirecionando à home em 3 segundos...</p>
+
+<meta http-equiv='refresh' content='3;{% url 'home' %}'>
+
+{% endblock %}

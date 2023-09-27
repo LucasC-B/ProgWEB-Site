@@ -1,0 +1,26 @@
+{%extends 'registro/base.html'%}
+
+{% block content %}
+
+<title>Movie Tracker</title>
+
+<h3 class='text-center'>Mudança de senha</h3>
+{% csrf_token %}
+<div class='mb-3'>
+    <label for='old_password' class='form-label'>Senha antiga:</label>
+    <input name='old_password' class='form-control' type='password' id='old_password' required='true'>
+</div>
+<div class='mb-3'>
+    <label for='new_password1' class='form-label'>Nova senha:</label>
+    <input name='new_password1' class='form-control' type='password' id='old_password' required='true'>
+</div>
+<div class='mb-3'>
+    <label for='new_password2' class='form-label'>Confirme a nova senha:</label>
+    <input name='new_password2' class='form-control' type='password' id='old_password' required='true'>
+</div>
+
+<div class='text-center'>
+    <button type='submit' class='btn btn-primary mx-3'>Salvar mudança de senha</button>
+</div>
+
+{% endblock content %}
