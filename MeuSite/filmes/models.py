@@ -23,8 +23,6 @@ class Filme(models.Model):
                               max_length=200, null=True, blank=True)
     diretor = models.CharField(help_text='Digite o nome do diretor', 
                               max_length=50, null=False, blank=False)
-    genero = models.CharField(help_text='Digite o genero do filme', 
-                              max_length=50, null=False, blank=False)
     nota = models.CharField(help_text='Digite a nota que avalia o filme', 
                               max_length=50, null=True, blank=True)
     review = models.CharField(help_text='Digite um breve review do filme', 
