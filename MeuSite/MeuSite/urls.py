@@ -12,7 +12,7 @@ Class-based views
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    2. Add a URL to urlpatterns
 """
 from django.contrib import admin
 from django.urls import path
@@ -29,7 +29,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import PasswordChangeDoneView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.models import User
-from views import visualizaTelaHome
+from MeuSite.views import visualizaTelaHome
 from usuarios.views import (
     registrarUsuario,
     visualizaLogout,
@@ -48,10 +48,10 @@ urlpatterns = [
     path('logout/', visualizaLogout, name = "logout"),
     path('usuario/', visualizaUsuario, name = "usuario"),
     path('deleta_usuario/', visualizaDeletaUsuario, name = "deleta_usuario"),
-    path('filme/', include('filme.urls', 'filme')),
+    path('filme/', include('filmes.urls', 'filmes')),
     path('must_authenticate/', visualizaAutentica, name = "deveAutenticar"),
-    path('muda_senha/done/', auth_views.PasswordChangeView.as_view(template_name='registro/mudaSenhaDone.html'), 
-         name='muda_senha_done'),
+    path('muda_senha/done/', auth_views.PasswordChangeView.as_view(template_name='registro/password_change_done.html'), 
+         name='password_change_done'),
     path('muda_senha/', auth_views.PasswordChangeView.as_view(template_name='registro/mudaSenha.html'), 
          name='muda_senha'),
     path('recupera_senha/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registro/recuperaSenhaDone.html'), 

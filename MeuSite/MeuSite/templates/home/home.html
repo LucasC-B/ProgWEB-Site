@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<title>Movie Tracker</title>
+
+<div class="container">
+    <div class="row">
+        <div class="d-lg-none col-lg-7 offset-lg-1 flex-column text-bg-dark">
+            <div class="card cria-filme-barra d-flex flex-column p-3">
+                <img class="img-fluid d-block m-auto pb-2" src="{% static 'Movie_Tracker_Logo.png' %}" width="72" height="72">
+                <h3 class="text-center">Adicione os seus filmes!</h3>
+                <p class="m-auto"><a class="btn btn-primary" href="{% url 'filmes:posta' %}">Crie o post do seu filme</a></p>
+            </div>
+        </div>
+
+        <div class= "left-column col-lg-7 offset-lg-1">
+            {% if request.user.is_authenticated %}
+                {% for filme in filmes %}
+                <div class="filme-post-container mt-3">
+                    {% include 'partes/partesFilme.html' with filme=filme %}
+                </div>
+                {% empty %}
+                    <p>Sem Filmes</p>
+                {% endfor %}
+            {% else %}
+            <p style="font-size: 16px; color: white; font-family: Arial, sans-serif;">Usuário não identificado! Crie um usuário para adicionar os seus filmes</p>
+                    <a role="button" href="{% url 'registro' %}"  class="btn btn-primary">Registrar</a>
+            {% endif %} 
+        </div>
+
+        <div class="right-column col-lg-3 d-lg-flex d-none flex-column mt-3">
+            <div class="card create-film-bar d-flex flex-column p-3 text-bg-white">
+                <img class="img-fluid d-block m-auto pb-2" src="{% static 'Movie_Tracker_Logo.png' %}" width="72" height="72">
+                <h3 class="text-center">Adicione os seus filmes!</h3>
+                <p class="m-auto"><a class="btn btn-primary" href="{% url 'filmes:posta' %}">Crie o post do seu filme</a></p>
+            </div>
+        </div>
+
+        {% include 'partes/paginationFilme.html' with filmes=filmes %}
+
+    </div>
+</div>
+
+{% endblock content %}

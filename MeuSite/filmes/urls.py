@@ -4,6 +4,7 @@ from filmes.views import (
     postaFilmeView,
     editaFilmeView,
     apagaFilmeView,
+    detalhaFilmeView,
     
 )
 
@@ -13,5 +14,6 @@ urlpatterns = [
     path('posta/', postaFilmeView, name = "posta" ),
     path('<slug>/edita',editaFilmeView, name = "edita" ),
     path('<slug>/delete', apagaFilmeView, name ="apaga" ),
+    path('<slug>/', detalhaFilmeView, name = "detalha")
     
 ]

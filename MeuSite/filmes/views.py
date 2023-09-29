@@ -15,7 +15,7 @@ def postaFilmeView(request):
     
     if form.is_valid():
         objeto = form.save(commit=False)
-        usuario = Usuario.objects.filter(email=usuario.email).first()
+        usuario = Usuario.objects.filter(email=user.email).first()
         objeto.usuario = usuario
         objeto.save()
         form = InsereFilmeForm()
@@ -23,7 +23,7 @@ def postaFilmeView(request):
         return redirect('home')
     
     context['form'] = form
-    return render(request, "filmes/postaFilme.html")
+    return render(request, "filmes/postaFilme.html", context)
 
 def apagaFilmeView(request, slug):
     context = {}
@@ -35,15 +35,13 @@ def apagaFilmeView(request, slug):
         return redirect('home')
     
     context['filme'] = filme
-    return render(request, 'filmes/apagaFilme.html')
+    return render(request, 'filmes/apagaFilme.html', context)
 
 def editaFilmeView(request, slug):
     context = {}
-    
     user = request.user
     if not user.is_authenticated:
         return redirect('deveAutenticar')
-    
     filme = get_object_or_404(Filme, slug=slug)
     if request.POST:
         form = AtualizaFilmeForm(request.POST or None, request.FILES or 
@@ -55,21 +53,24 @@ def editaFilmeView(request, slug):
             filme = objeto
             return redirect('home')
         
-        form = AtualizaFilmeForm(
-            inicial= {
-                "titulo": filme.titulo,
-                "nacionalidade": filme.nacionalidade,
-                "ano": filme.ano,
-                "sinopse": filme.sinopse,
-                "diretor": filme.diretor,
-                "nota": filme.nota,
-                "review": filme.review,
-                "visto": filme.visto
-            }
-        )
-        
-        context['form'] = form
-        return render(request, 'filmes/editaFilme.html', context)
+    form = AtualizaFilmeForm(
+        initial= {
+            "titulo": filme.titulo,
+            "nacionalidade": filme.nacionalidade,
+            "ano": filme.ano,
+            "sinopse": filme.sinopse,
+            "diretor": filme.diretor,
+            "nota": filme.nota,
+            "review": filme.review,
+            "visto": filme.visto
+        }
+    )
+    context['form'] = form
+    return render(request, 'filmes/editaFilme.html', context)
             
-        
-    
+
+def detalhaFilmeView(request,slug):
+    contexto={}
+    filme=get_object_or_404(Filme,slug=slug)
+    contexto['filme']=filme
+    return render(request, 'filmes/detalhaFilme.html' ,contexto)

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <title>{{filme.titulo}}</title>
+
+    <div class='container'>
+        <div class='row'>
+            <div class='card m-auto mt-4 text-bg-dark' style='width: 900px;'>
+                <div class='card-body my-2'>
+                    <p class="card-text text-bg-dark">{{filme.nacionalidade}}</p>
+                    <p class="card-text text-bg-dark">{{filme.ano}}</p>
+                    <p class="card-text text-bg-dark">{{filme.sinopse}}</p>
+                    <p class="card-text text-bg-dark">{{filme.diretor}}</p>
+                    <p class="card-text text-bg-dark">{{filme.nota}}</p>
+                    <p class="card-text text-bg-dark">{{filme.review}}</p>
+                    <p class="card-text text-bg-dark">{{filme.visto}}</p>
+                    <div class='opsFilmes'>
+                        {% if filme.usuario == request.user %}
+                        <div class='ops'>
+                            <a href='{% url 'filmes:edita' filme.slug %}' class='btn btn-warning mx-2'>Editar Filme</a>
+                            <a href='{% url 'filmes:apaga' filme.slug %}'class='btn btn-danger'>Deletar Filme</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

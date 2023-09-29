@@ -1,4 +1,4 @@
-{% extends 'registro/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
                         <p class='card-text'>{{filme.nacionalidade}}</p>
                     </div>
                     <div class='container'>
-                        <p class='card-text'>{{filme.ano}}</p>
+                        <p class='card-number'>{{filme.ano}}</p>
                     </div>
                     <div class='container'>
                         <p class='card-text'>{{filme.sinopse}}</p>
@@ -28,8 +28,22 @@
                         <p class='card-text'>{{filme.diretor}}</p>
                     </div>
                     <div class='container'>
-                        <p class='card-text'>{{filme.nota}}</p>
+                        <p class='card-number'>{{filme.nota}}</p>
                     </div>
                     <div class='container'>
-                        <p class='card-text'>{{filme.}}</p>
+                        <p class='card-text'>{{filme.review}}</p>
                     </div>
+                    <div class='container'>
+                        <p class='card-checkbox'>{{filme.visto}}</p>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <button type="submit" class="btn btn-danger">Deletar filme</button> 
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content%}

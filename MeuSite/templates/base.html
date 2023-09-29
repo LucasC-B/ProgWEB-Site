@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    {% include 'partes/header.html' %}
+</head>
+
+<style type='text/css'>
+    body{
+        background-color: gray;
+    }
+</style>
+<body>
+    <main>
+        <style type='text/css'>
+            .main{
+                min-height: 100vh;
+                height: 100%;
+            }
+        </style>
+        <div class='main'>
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </main>
+    <footer>
+        {% include 'partes/footer.html' %}
+    </footer>
+</body>

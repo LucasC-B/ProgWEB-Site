@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 
 def localiza(instance,filename):
@@ -20,7 +20,7 @@ class Filme(models.Model):
     ano = models.CharField(help_text='Digite o ano de lancamento do filme', 
                               max_length=50, null=False, blank=False)
     sinopse = models.CharField(help_text='Digite o titulo do filme', 
-                              max_length=50, null=True, blank=True)
+                              max_length=200, null=True, blank=True)
     diretor = models.CharField(help_text='Digite o nome do diretor', 
                               max_length=50, null=False, blank=False)
     genero = models.CharField(help_text='Digite o genero do filme', 
@@ -28,7 +28,7 @@ class Filme(models.Model):
     nota = models.CharField(help_text='Digite a nota que avalia o filme', 
                               max_length=50, null=True, blank=True)
     review = models.CharField(help_text='Digite um breve review do filme', 
-                              max_length=50, null=True, blank=True)
+                              max_length=200, null=True, blank=True)
     visto = models.BooleanField(default=False)
     
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -42,5 +42,6 @@ class Filme(models.Model):
 def salva_recebe_filme(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify(instance.usuario.username + "-" + instance.titulo)
-        
+
+pre_save.connect(salva_recebe_filme, sender=Filme)
     

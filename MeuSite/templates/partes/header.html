@@ -11,7 +11,7 @@ integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+f
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="logo-container">
-            <img class="img-fluid logo-img" src="{% static ''%}" alt="Movie Tracker">
+            <img class="img-fluid logo-img" src="{% static 'Movie_Tracker_Logo.png'%}" alt="Movie Tracker">
 
             <style>
                 /* Classe CSS personalizada para controlar o tamanho da imagem */
@@ -33,27 +33,28 @@ integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+f
       <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start">
 
         {% if request.user.is_authenticated %}
-            <a class="d-flex align-items-center text-white text-decoration-none">
-                Bem-Vindo, {{request.user.username}}!  |
+            <a class="d-flex align-items-center text-white text-decoration-none" style="margin-left: 25px;">
+            Bem-Vindo, {{request.user.username}}! |
             </a>
         {% endif %}
 
+
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">Inicio</a></li>
+            <li style='margin-left: 25px;'><a href="{% url 'home' %}" class="nav-link px-2 text-white">Inicio</a></li>
         </ul>
 
         {% if request.user.is_authenticated %}
 
             <div class="text-end">
                 <a role="button" href="{% url 'logout' %}" class="btn btn-outline-light me-2">Sair</a>
-                <a role="button" href="{% url 'account' %}"  class="btn btn-warning">Minha conta</a>
+                <a role="button" href="{% url 'usuario' %}"  class="btn btn-primary">Minha conta</a>
             </div>
 
         {% else %}
 
             <div class="text-end">
                 <a role="button" href="{% url 'login' %}" class="btn btn-outline-light me-2">Entrar</a>
-                <a role="button" href="{% url 'register' %}"  class="btn btn-warning">Registrar</a>
+                <a role="button" href="{% url 'registro' %}"  class="btn btn-primary">Registrar</a>
             </div>
 
         {% endif %}
@@ -62,6 +63,6 @@ integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+f
 
     </div>
 
-    {% include 'snippets/popup.html' %}
+    {% include 'partes/popup.html' %}
 
 </header>

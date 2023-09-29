@@ -12,7 +12,7 @@ def visualizaTelaHome(request):
 
     contexto = {}
 
-    filme = sorted(Filme.objects.all(usuario=request.user), attrgetter('titulo'), reverse=True)
+    filme = sorted(Filme.objects.all(), key=attrgetter('titulo'), reverse=True)
     contexto['filmes'] = filme
 
     pagina = request.GET.get("pagina",1)

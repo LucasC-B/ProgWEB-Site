@@ -1,4 +1,4 @@
-{% extends 'registro/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
@@ -9,11 +9,11 @@
         <!-- Coluna para os posts no centro da tela -->
         <div class="col-md-7">
             <h3 class="mb-2 font-weight-normal" style="color: white;">Seus Posts:</h3>
-            {% if blog_posts %}
+            {% if filmes %}
                 <ul class="list-group">
-                    {% for post in blog_posts %}
-                        <div class="blog-post-container mt-3">
-                            {% include 'blog/snippets/blog_post_snippet.html' with blog_post=post %}
+                    {% for filme in filmes %}
+                        <div class="filme-post-container mt-3">
+                            {% include 'partes/partesFilme.html' with filme=filme %}
                         </div>
                     {% endfor %}
                 </ul>
@@ -22,7 +22,7 @@
                     <div>
                         <li class="list-group-item d-flex justify-content-center">
                             <div>
-                                <a href="{% url 'blog:create' %}" style="text-decoration: none !important" class="stretched-link link-dark">Você não listou nenhum filme. Quer adicionar?</a>
+                                <a href="{% url 'filmes:posta' %}" style="text-decoration: none !important" class="stretched-link link-dark">Você não listou nenhum filme. Quer adicionar?</a>
                             </div>
                         </li>
                     </div>
@@ -48,7 +48,7 @@
                             <input type="text" name="username" class="form-control text-bg-dark" id="username" placeholder="Digite seu novo Username" value="{{ account_form.initial.username }}">
                         </div>
 
-                        {% for field in account_form %}
+                        {% for field in usuario_form %}
                             <p>
                                 {% for error in field.errors %}
                                     <span style="color: red;">{{ error }}</span>
@@ -56,25 +56,25 @@
                             </p>
                         {% endfor %}
 
-                        {% if account_form.non_field_errors %}
+                        {% if usuario_form.non_field_errors %}
                             <div style="color: red;">
-                                <p>{{ account_form.non_field_errors }}</p>
+                                <p>{{ usuario_form.non_field_errors }}</p>
                             </div>
                         {% endif %}
 
                         <div class="d-flex flex-column">
-                            <a class="m-auto" href="{% url 'password_change' %}">Mudança de senha</a>
+                            <a class="m-auto" href="{% url 'muda_senha' %}">Mudança de senha</a>
                         </div>
 
                         <div class="mt-3 d-flex justify-content-between">
                             <button type="submit" class="btn btn-warning">Salvar mudanças</button>
-                            <a role="button" href="{% url 'delete_account' %}" class="btn btn-danger">Apagar conta</a>
+                            <a role="button" href="{% url 'deleta_usuario' %}" class="btn btn-danger">Apagar conta</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        {% include 'blog/snippets/blog_post_pagination.html' with blog_posts=blog_posts %}
+        {% include 'partes/paginationFilme.html' with filmes=filmes %}
     </div>
 </div>
 

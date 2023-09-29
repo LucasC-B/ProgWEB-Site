@@ -1,4 +1,4 @@
-{% extends 'registro/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 
 <div class='container mt-5'>
@@ -12,39 +12,39 @@
                     <form method='post' enctype='multipart/form-data'>
                         {% csrf_token %}
                         <div class='mb-3'>
-                            <label for='id_title' class='form-label'>Título</label>
-                            <input type='text' name='title' class='form-control' id='id_title' placeholder='Título' required autofocus>
+                            <label for='id_titulo' class='form-label'>Título</label>
+                            <input type='text' name='titulo' class='form-control' id='id_titulo' placeholder='Título' required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Nacionalidade</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Qual a nacionalidade do filme?" required></textarea>
+                            <label for="id_nacionalidade" class="form-label">Nacionalidade</label>
+                            <input type='text' name="nacionalidade" class="form-control" id="id_nacionalidade" placeholder="Qual a nacionalidade do filme?" required>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Ano</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Qual ano foi lançado?" required></textarea>
+                            <label for="id_ano" class="form-label">Ano</label>
+                            <input type='number' name="ano" class="form-control" id="id_ano" placeholder="Qual ano foi lançado?" min='1900' max='2099' step='1' required>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Sinopse</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Uma breve sinopse do filme" required></textarea>
+                            <label for="id_sinopse" class="form-label">Sinopse</label>
+                            <textarea name="sinopse" id="id_sinopse" rows="10" class="form-control" placeholder="Uma breve sinopse do filme"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Diretor</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Qual o diretor?" required></textarea>
+                            <label for="id_diretor" class="form-label">Diretor</label>
+                            <input type='text' name="diretor" class="form-control" id="id_diretor" placeholder="Qual o diretor?" required>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Nota</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Qual sua nota?" required></textarea>
+                            <label for="id_nota" class="form-label">Nota</label>
+                            <input type='number' name="body" class="form-control" id="id_nota" placeholder="Qual sua nota?" min='0' max='10'>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Review</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Uma breve review" required></textarea>
+                            <label for="id_review" class="form-label">Review</label>
+                            <textarea name="review" id="id_review" rows="10" class="form-control" placeholder="Uma breve review"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="id_body" class="form-label">Visto</label>
-                            <textarea name="body" id="id_body" rows="10" class="form-control" placeholder="Você viu esse filme?" required></textarea>
+                            <label for="id_visto" class="form-label">Visto</label>
+                            <input type='checkbox' name="visto" class="form-control" id="id_visto" placeholder="Você viu esse filme?">
                         </div>
                         <div class='text-center'>
-                            <button type='submit' class='btn btn-primary'>POSTAR</button>
+                            <button type='submit' class='btn btn-primary'>Postar Filme</button>
                         </div>
                     </form>
                 </div>

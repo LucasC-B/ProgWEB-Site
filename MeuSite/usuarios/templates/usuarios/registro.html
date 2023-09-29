@@ -1,4 +1,4 @@
-{% extends 'registro/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
@@ -7,14 +7,14 @@
 
 <div class="container">
     <div class="d-flex flex-column" style="margin-bottom: 20px;">
-        <img class="img-fluid mx-auto" src="{% static ''%}" alt="Movie Tracker - Avalie seus filmes" width="400" height="20" style="margin-top: 30px;">
+        <img class="img-fluid mx-auto" src="{% static 'Movie_Tracker_Logo.png'%}" alt="Movie Tracker - Avalie seus filmes" width="400" height="20" style="margin-top: 30px;">
     </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 mx-auto my-3">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="text-center">Login</h3>
+                        <h3 class="text-center">Registrar</h3>
                     </div>
                     <div class="card-body">
                         <form method="post">
@@ -36,16 +36,16 @@
                                 <label for="password2" class="form-label">Confirmação de senha</label>
                                 <input type="password" name="password2" class="form-control" id="password2" placeholder="Confirme sua senha" required>
                             </div>
-                            {% for field in login_form %}
+                            {% for field in registration_form %}
                             <p>
                                 {% for error in field.errors %}
                                 <p style="color: red;">{{ error }}</p>
                                 {% endfor %}
                             </p>
                             {% endfor %}
-                            {% if login_form.non_field_errors %}
+                            {% if registration_form.non_field_errors %}
                             <div style="color: red;">
-                                <p>{{ login_form.non_field_errors }}</p>
+                                <p>{{ registration_form.non_field_errors }}</p>
                             </div>
                             {% endif %}
 

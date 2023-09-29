@@ -1,6 +1,6 @@
 from usuarios.models import Usuario
 from django.views.generic.base import View
-from usuarios.forms import UsuarioModel2Form
+from usuarios.forms import UsuarioRegistraForm
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
 from django.http.response import HttpResponseRedirect
@@ -19,18 +19,18 @@ from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 def registrarUsuario(request):
     contexto = {}
     if request.POST:
-          form = UsuarioModel2Form(request.POST)
+          form = UsuarioRegistraForm(request.POST)
           if form.is_valid():
             form.save()
             email = form.cleaned_data.get('email')
-            senha_k = form.cleaned_data.get('senha1')
-            usuario = authenticate(email=email, password=senha_k)
+            password_k = form.cleaned_data.get('password1')
+            usuario = authenticate(email=email, password=password_k)
             login(request, usuario)
             return redirect('home')
           else:
               contexto['registration_form'] = form
     else:
-        form = UsuarioRegistraForm
+        form = UsuarioRegistraForm()
         contexto['registration_form'] = form
     
     return render(request, 'usuarios/registro.html', contexto)
@@ -43,6 +43,7 @@ def visualizaLogout(request):
 
 
 def visualizaLogin(request):
+    print('c')
     contexto = {}
 
     user = request.user
@@ -50,16 +51,20 @@ def visualizaLogin(request):
         return redirect('home')
     
     if request.POST:
-            form = UsuarioAutenticaForm(request.POST)
-            if form.is_valid():
-                email = request.POST['email']
-                senha = request.POST['senha']
-                user = authenticate(email = email, password=senha)
-                
-                if user:
-                    login(request,user)
-                    messages.success(request, 'Login feito com sucesso!') 
-                    return redirect("home")
+        print('c')
+        form = UsuarioAutenticaForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email = email, password=password)
+            print('a')
+            
+            if user:
+                print('b')
+                login(request,user)
+                messages.success(request, 'Login feito com sucesso!') 
+                return redirect("home")
+            
     else:
         form = UsuarioAutenticaForm()
         
@@ -78,7 +83,7 @@ def visualizaUsuario(request):
         if form.is_valid():
             form.initial = {
 				"email": request.POST['email'],
-				"nome":request.POST['nome'],
+				"username":request.POST['username'],
 			}
             form.save()
             messages.success(request, 'Conta atualizada com sucesso!')
@@ -88,7 +93,7 @@ def visualizaUsuario(request):
         form = UsuarioAtualizaForm(
             initial={
 				"email": request.user.email,
-				"nome": request.user.username,
+				"username": request.user.username,
 			}
         )
 
@@ -118,9 +123,9 @@ def visualizaDeletaUsuario(request):
 
     if request.POST:
         email = request.POST['email']
-        senha = request.POST['senha']
+        password = request.POST['password']
 
-        user = authenticate(email = request.user.email, password = senha)
+        user = authenticate(email = request.user.email, password = password)
 
         if user:
             user.delete()

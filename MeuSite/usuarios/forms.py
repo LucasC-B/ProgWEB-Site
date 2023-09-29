@@ -1,6 +1,6 @@
 from django import forms
 from usuarios.models import Usuario
-from django.contrib.auth import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from typing import Any
 
@@ -11,29 +11,29 @@ class UsuarioRegistraForm(UserCreationForm):
 
     class Meta:
         model = Usuario
-        fields = ('email', 'nome', 'senha1', 'senha2')
+        fields = ('email', 'username', 'password1', 'password2')
 
 class UsuarioAutenticaForm(forms.ModelForm):
-    senha = forms.CharField(label='Senha', widget=forms.PasswordInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     class Meta:
         model = Usuario
-        fields = ('email', 'senha')
+        fields = ('email', 'password')
 
-    def analisa(self):
+    def clean(self):
         if self.is_valid():
             email = self.cleaned_data['email']
-            senha = self.cleaned_data['senha']
-            if not authenticate(email=email, password = senha):
+            password = self.cleaned_data['password']
+            if not authenticate(email=email, password = password):
                 raise forms.ValidationError("Login Inválido")
             
 class UsuarioAtualizaForm(forms.ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ('email','nome')
+        fields = ('email','username')
 
-    def analisa_email(self):
+    def clean_email(self):
         if self.is_valid():
             email = self.cleaned_data['email']
             try:
@@ -42,12 +42,12 @@ class UsuarioAtualizaForm(forms.ModelForm):
                  return email
             raise forms.ValidationError('Email "%s" já sendo utilizado.' % email)
         
-    def analisa_nome(self):
+    def clean_nome(self):
         if self.is_valid():
-            nome = self.cleaned_data['nome']
+            username = self.cleaned_data['username']
             try:
-                usuario = Usuario.objects.exclude(pk=self.instance.pk).get(username=nome)
+                usuario = Usuario.objects.exclude(pk=self.instance.pk).get(username=username)
             except Usuario.DoesNotExist:
-                 return nome
-            raise forms.ValidationError('Nome "%s" já sendo utilizado.' % nome)
+                 return username
+            raise forms.ValidationError('Nome "%s" já sendo utilizado.' % username)
         
